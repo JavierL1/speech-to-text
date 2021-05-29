@@ -1,5 +1,4 @@
 import os
-import sys
 import time
 from pathlib import Path
 
@@ -9,9 +8,6 @@ from pydub.silence import split_on_silence
 from tqdm import tqdm
 
 from .utils import seconds_to_human
-
-INPUT_AUDIO_PATH = Path(sys.argv[1])
-OUTPUT_TEXT_PATH = Path(sys.argv[2])
 
 # create a speech recognition object
 r = sr.Recognizer()
@@ -30,10 +26,11 @@ def write_large_audio_transcription(audio_path: Path, text_path: Path):
     """
     start_time = time.time()
     # open the audio file using pydub
+    print('Cargando archivo de audio...')
     sound = AudioSegment.from_mp3(audio_path)
-    print('Dividiendo audio completo según silencios encontrados\n')
     print(f'Audio completo dura: {seconds_to_human(sound.duration_seconds)}')
-    print('Esto demora bastante uwu...\n')
+    print('Dividiendo audio completo según silencios encontrados')
+    print('Esto demora bastante uwu...')
     # split audio sound where silence is 700 miliseconds or more and get chunks
     chunks = split_on_silence(
         sound,
@@ -77,7 +74,3 @@ def write_large_audio_transcription(audio_path: Path, text_path: Path):
             os.remove(chunk_filename)
     print('Traducción completada.')
     print(f'Texto escrito en {text_path}')
-
-
-if __name__ == '__main__':
-    write_large_audio_transcription(INPUT_AUDIO_PATH, OUTPUT_TEXT_PATH)
