@@ -1,6 +1,11 @@
+- Obtener la imagen
+```
+docker pull javierls0/speechtotext:latest
+```
+
 - Teniendo la imagen, basta con correr:
 ```
-docker run --rm -v C:\\Users\\RUTA\\A\\CARPETA:/data -it speechtotext:latest
+docker run --rm -v C:\\Users\\RUTA\\A\\CARPETA:/data -it javierls0/speechtotext:latest
 ```
 
 Donde `RUTA\\A\\CARPETA` corresponde a donde tengas los videos, de preferencia dejaría una carpeta solo para eso.
