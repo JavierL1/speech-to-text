@@ -7,4 +7,7 @@ RUN python3 -m ensurepip
 WORKDIR /app
 COPY ./requirements.txt .
 RUN pip3 install -r requirements.txt
-COPY ./src .
+COPY ./app .
+WORKDIR /app/src
+
+ENTRYPOINT [ "python3", "run.py" ]
