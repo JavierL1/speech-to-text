@@ -27,7 +27,11 @@ def write_large_audio_transcription(audio_path: Path, text_path: Path):
     start_time = time.time()
     # open the audio file using pydub
     print('Cargando archivo de audio...')
-    sound = AudioSegment.from_mp3(audio_path)
+    try:
+        sound = AudioSegment.from_mp3(audio_path)
+    except Exception as e:
+        print(e)
+
     print(f'Audio completo dura: {seconds_to_human(sound.duration_seconds)}')
     print('Dividiendo audio completo según silencios encontrados')
     print('Esto demora bastante uwu...')
