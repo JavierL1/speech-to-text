@@ -1,5 +1,6 @@
 import os
 import time
+import pickle
 from pathlib import Path
 
 import speech_recognition as sr 
@@ -32,27 +33,43 @@ def write_large_audio_transcription(audio_path: Path, text_path: Path):
     except Exception as e:
         print(e)
 
+    filename = audio_path.with_suffix('').stem
+    pickle_path = audio_path.parent / f'{filename}.pkl'
     print(f'Audio completo dura: {seconds_to_human(sound.duration_seconds)}')
     print('Dividiendo audio completo según silencios encontrados')
-    print('Esto demora bastante uwu...')
-    # split audio sound where silence is 700 miliseconds or more and get chunks
-    chunks = split_on_silence(
-        sound,
-        # experiment with this value for your target audio file
-        min_silence_len = 1000,
-        silence_thresh=sound.dBFS-20,
-        # keep the silence for 1 second, adjustable as well
-        keep_silence=500,
-    )
-    folder_name = "audio-chunks"
-    # create a directory to store the audio chunks
+    print('Revisando si audio ya fue segmentado...')
+    if pickle_path.exists():
+        print('Se encontraron segmentos. Cargando...')
+        with open(pickle_path, 'rb') as pickle_file:
+            chunks = pickle.load(pickle_file)
+            print('Segmentos cargados.')
+    else:
+        print('No se encontraron segmentos generados')
+        print('Generando segmentos...')
+        # split audio sound where silence is 700 miliseconds or more and get chunks
+        chunks = split_on_silence(
+            sound,
+            # experiment with this value for your target audio file
+            min_silence_len = 1000,
+            silence_thresh=sound.dBFS-20,
+            # keep the silence for 1 second, adjustable as well
+            keep_silence=500,
+        )
+        seconds_generating_segments = int(time.time() - start_time)
+        print(f'Se generaron {len(chunks)} segmentos de audio en {seconds_to_human(seconds_generating_segments)}')
+
+        print(f'Guardando segmentos en {pickle_path}')
+        with open(pickle_path, 'wb') as pickle_file:
+            pickle.dump(sound, pickle_file)
+        print('Segmentos guardados')
+
+    folder_name = 'audio-chunks'
+
     if not os.path.isdir(folder_name):
         os.mkdir(folder_name)
 
-    seconds_generating_segments = int(time.time() - start_time)
-    print(f'Se generaron {len(chunks)} segmentos de audio en {seconds_to_human(seconds_generating_segments)}')
     seconds_passed = 0
-    print('Traduciendo segmentos...\n')
+    print(f'Traduciendo {len(chunks)} segmentos...\n')
     # process each chunk 
     for i, audio_chunk in tqdm(enumerate(chunks, start=1)):
         seconds_passed += audio_chunk.duration_seconds
@@ -68,7 +85,7 @@ def write_large_audio_transcription(audio_path: Path, text_path: Path):
             try:
                 text = r.recognize_google(audio_listened, language='pt-BR')
             except sr.UnknownValueError as e:
-                write_text_to_file('No se pudo traducir este segmento :( \n')
+                write_text_to_file(text_path, 'No se pudo traducir este segmento :( \n')
             else:
                 write_text_to_file(text_path, f'{text.capitalize()}. \n')
 
