@@ -18,6 +18,12 @@ def save_audio(audio: AudioFileClip, audio_path: Path):
 
 def extract_and_save_audio(video_path: Path, audio_path: Path):
     start_time = time.time()
+    print('Revisando si audio ya fue extraído...')
+    if audio_path.exists():
+        print('Se encontró audio extraido')
+        return
+
+    print('No se encontró audio')
     print(f'Extrayendo audio desde el video {video_path.as_posix()}...')
     audio = extract_audio(video_path.as_posix())
     save_audio(audio, audio_path.as_posix())
