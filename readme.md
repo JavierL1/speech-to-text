@@ -1,6 +1,6 @@
 - Teniendo la imagen, basta con correr:
 ```
-docker run --rm -v C:\\Users\\RUTA\\A\\CARPETA:/data -it --entrypoint="" speechtotext:latest
+docker run --rm -v C:\\Users\\RUTA\\A\\CARPETA:/data -it speechtotext:latest
 ```
 
 Donde `RUTA\\A\\CARPETA` corresponde a donde tengas los videos, de preferencia dejaría una carpeta solo para eso.
