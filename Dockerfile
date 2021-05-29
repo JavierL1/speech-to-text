@@ -1,8 +1,6 @@
-FROM jrottenberg/ffmpeg:4.1-alpine
+FROM jrottenberg/ffmpeg:4.1-ubuntu
 
-RUN apk update
-RUN apk add make automake gcc g++ subversion python3-dev jpeg-dev zlib-dev
-RUN python3 -m ensurepip
+RUN apt update && apt-get install -y make automake gcc g++ subversion python3-pip
 
 WORKDIR /app
 COPY ./requirements.txt .
