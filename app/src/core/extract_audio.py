@@ -13,7 +13,7 @@ def extract_audio(video_path: Path) -> AudioFileClip:
 
 
 def save_audio(audio: AudioFileClip, audio_path: Path):
-    audio.write_audiofile(audio_path)
+    audio.write_audiofile(audio_path, fps=16000)
 
 
 def extract_and_save_audio(video_path: Path, audio_path: Path):
