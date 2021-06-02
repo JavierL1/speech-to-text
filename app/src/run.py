@@ -11,9 +11,9 @@ def translate_one_video_file(video_filename: str):
     video_filepath = Path('/data', video_filename)
     filename = video_filepath.with_suffix('').stem
     audio_path = video_filepath.parent / f'{filename}.mp3'
-    text_path = video_filepath.parent / f'{filename}.txt'
+    srt_path = video_filepath.parent / f'{filename}.srt'
     extract_and_save_audio(video_filepath, audio_path)
-    write_large_audio_transcription(audio_path, text_path)
+    write_large_audio_transcription(audio_path, srt_path)
     elapsed_time_seconds = int(time.time() - start_time)
     print(f'Tiempo total de la ejecución: {seconds_to_human(elapsed_time_seconds)}')
 
