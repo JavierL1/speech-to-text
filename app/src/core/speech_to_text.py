@@ -2,7 +2,7 @@ import os
 import time
 import pickle
 from pathlib import Path
-from typing import Generator, List
+from typing import Iterator, List
 
 import speech_recognition as sr 
 from pydub import AudioSegment
@@ -19,7 +19,7 @@ def write_text_to_file(file_path: Path, text: str):
         file.write(text)
 
 
-def generate_srt_entries_from_audio_chunks(audio_chunks: List[AudioChunk]) -> Generator[SRTEntry]:
+def generate_srt_entries_from_audio_chunks(audio_chunks: List[AudioChunk]) -> Iterator[SRTEntry]:
 
     folder_name = 'audio-chunks'
 
