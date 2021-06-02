@@ -15,13 +15,20 @@ class SRTEntry:
 SUBTITLE_TEMPLATE = '''{index}
 {start} --> {end}
 {subtitle}
+
 '''
+
+def format_timedelta(td: timedelta):
+    td_str = str(td)
+    [hms, ms] = td_str.split('.')
+    [h, m, s] = [int(e) for e in hms.split(':')]
+    return f'{h:02}:{m:02}:{s:02},{ms[0:3]}'
 
 def format_srt_entry(srt_entry: SRTEntry, index: int):
     return SUBTITLE_TEMPLATE.format(
         index=index,
-        start=str(srt_entry.start_time),
-        end=str(srt_entry.end_time),
+        start=format_timedelta(srt_entry.start_time),
+        end=format_timedelta(srt_entry.end_time),
         subtitle=srt_entry.content,
     )
 
