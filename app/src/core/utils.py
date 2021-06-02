@@ -1,6 +1,6 @@
 import datetime
 import itertools
-from typing import Optional
+from typing import List, Optional
 from dataclasses import dataclass
 
 from pydub import AudioSegment
@@ -22,7 +22,7 @@ def custom_split_on_silence(
     silence_thresh: int = -16,
     keep_silence: int = 100,
     seek_step: int = 1
-) -> list[AudioChunk]:
+) -> List[AudioChunk]:
     """
     Returns list of audio segments from splitting audio_segment on silent sections
 
